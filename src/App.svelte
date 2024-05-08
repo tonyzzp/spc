@@ -1,5 +1,17 @@
 <script lang="ts">
-    import { init, type EChartsType } from "echarts";
+    import { BarChart, LineChart, SunburstChart } from "echarts/charts";
+    import {
+        DatasetComponent,
+        GridComponent,
+        TitleComponent,
+        ToolboxComponent,
+        TooltipComponent,
+        TransformComponent,
+    } from "echarts/components";
+    import * as echarts from "echarts/core";
+    import { init, type EChartsType } from "echarts/core";
+    import { LabelLayout, UniversalTransition } from "echarts/features";
+    import { CanvasRenderer } from "echarts/renderers";
     import { datastore } from "./datastore";
     import type { etypes } from "./types";
 
@@ -145,6 +157,13 @@
         chart.setOption(option as any);
     };
 
+    echarts.use([
+        SunburstChart,
+        TitleComponent,
+        TooltipComponent,
+        ToolboxComponent,
+        CanvasRenderer,
+    ]);
     window.addEventListener("resize", () => {
         chart1?.resize();
         chart2?.resize();
@@ -253,6 +272,7 @@
 
     .chart_dom {
         width: 80%;
+        max-width: 600px;
         aspect-ratio: 1;
         border-width: 1px;
         border-color: black;

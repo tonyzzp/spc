@@ -189,7 +189,7 @@
         >{showAddArea ? "取消" : "添加"}</button
     >
 
-    <div class="border m-2 p-2" class:d-none={!showAddArea}>
+    <div class="tbl-add border m-2 p-2" class:d-none={!showAddArea}>
         <div class="mb-1">
             <label for="ipt_name" class="form-label">名称</label>
             <input
@@ -268,6 +268,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 1em;
     }
 
     .chart_dom {
@@ -277,5 +278,14 @@
         border-width: 1px;
         border-color: black;
         border-style: solid;
+    }
+
+    .tbl-add {
+        min-width: 500px;
+        max-width: 800px;
+    }
+
+    .table {
+        max-width: 800px;
     }
 </style>

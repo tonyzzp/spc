@@ -20,6 +20,9 @@ importers:
       echarts:
         specifier: ^5.5.0
         version: 5.5.0
+      md5-ts:
+        specifier: ^0.1.6
+        version: 0.1.6
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.2
@@ -27,6 +30,9 @@ importers:
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
+      '@types/bootstrap':
+        specifier: ^5.2.10
+        version: 5.2.10
       svelte:
         specifier: ^4.2.12
         version: 4.2.15
@@ -321,6 +327,9 @@ packages:
   '@tsconfig/svelte@5.0.4':
     resolution: {integrity: sha512-BV9NplVgLmSi4mwKzD8BD/NQ8erOY/nUE/GpgWe2ckx+wIQF5RyRirn/QsSSCPeulVpc3RA/iJt6DpfTIZps0Q==}
 
+  '@types/bootstrap@5.2.10':
+    resolution: {integrity: sha512-F2X+cd6551tep0MvVZ6nM8v7XgGN/twpdNDjqS1TUM7YFNEtQYWk+dKAnH+T1gr6QgCoGMPl487xw/9hXooa2g==}
+
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -491,6 +500,9 @@ packages:
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
+
+  md5-ts@0.1.6:
+    resolution: {integrity: sha512-xGl3IVril2ljBTTrSszfX7QDBzK9G7NBeFAMOBTB8oGlP3l90IRL4NEey65TQk/CuXTiw2qM28NWU2LiZIGOrg==}
 
   mdn-data@2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
@@ -896,6 +908,10 @@ snapshots:
 
   '@tsconfig/svelte@5.0.4': {}
 
+  '@types/bootstrap@5.2.10':
+    dependencies:
+      '@popperjs/core': 2.11.8
+
   '@types/estree@1.0.5': {}
 
   '@types/pug@2.0.10': {}
@@ -1087,6 +1103,8 @@ snapshots:
   magic-string@0.30.10:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  md5-ts@0.1.6: {}
 
   mdn-data@2.0.30: {}
 

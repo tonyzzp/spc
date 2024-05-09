@@ -1,19 +1,18 @@
 <script lang="ts">
-    import { BarChart, LineChart, SunburstChart } from "echarts/charts";
+    import { SunburstChart } from "echarts/charts";
     import {
-        DatasetComponent,
-        GridComponent,
         TitleComponent,
         ToolboxComponent,
         TooltipComponent,
-        TransformComponent,
     } from "echarts/components";
     import * as echarts from "echarts/core";
     import { init, type EChartsType } from "echarts/core";
-    import { LabelLayout, UniversalTransition } from "echarts/features";
     import { CanvasRenderer } from "echarts/renderers";
+    import { api } from "./api";
     import { datastore } from "./datastore";
+    import { goto } from "./route";
     import type { etypes } from "./types";
+    import { Toast } from "bootstrap";
 
     let chartDom1: HTMLElement;
     let chartDom2: HTMLElement;
@@ -25,6 +24,22 @@
     let iptType = "";
     let iptValue = "";
     let showAddArea = false;
+    let err = "";
+    let toastDom: HTMLElement;
+    let toast: Toast;
+
+    const save = async () => {
+        let ret = await api.save(JSON.stringify(data));
+        if (ret == null || ret.code) {
+            err = ret.msg || "保存失败";
+            toast.show();
+        }
+    };
+
+    $: if (toastDom) {
+        toast = new Toast(toastDom);
+        toast.hide();
+    }
 
     const onAddClick = () => {
         iptName = "";
@@ -36,18 +51,30 @@
     const onAddConfirmClick = () => {
         console.info(iptName, iptType, iptValue);
         if (iptName == "" || iptType == "" || !parseInt(iptValue)) {
-            alert("请输入数据");
+            err = "请输入数据";
+            toast.show();
             return;
         }
-        datastore.put({
-            name: iptName,
-            type: iptType,
-            value: parseInt(iptValue),
-        });
-        reloadData();
+        let index = data.findIndex((v) => v.name == iptName);
+        if (index > -1) {
+            data = data.splice(index, 1);
+        }
+        data = [
+            ...data,
+            {
+                name: iptName,
+                type: iptType,
+                value: parseInt(iptValue),
+            },
+        ];
         iptName = "";
         iptType = "";
         iptValue = "";
+        showAddArea = false;
+        save();
+    };
+
+    const onCancelClick = () => {
         showAddArea = false;
     };
 
@@ -63,18 +90,35 @@
         console.info("del", item);
         let ok = confirm(`删除 ${item.name}, ${item.value} ?`);
         if (ok) {
-            datastore.remove(item.name);
-            reloadData();
+            let index = data.findIndex((v) => v.name == item.name);
+            if (index != -1) {
+                data.splice(index, 1);
+                data = [...data];
+            }
+        }
+        save();
+    };
+
+    const onKeyPress = (e: KeyboardEvent) => {
+        console.info(e);
+        if (e.key == "Enter") {
+            onAddConfirmClick();
         }
     };
 
-    const initView = () => {
-        datastore.init();
-        reloadData();
+    const onLogoutClick = () => {
+        api.setToken("");
+        localStorage.removeItem("spc-token");
+        goto("/login");
     };
 
-    const reloadData = () => {
-        data = datastore.all();
+    const initView = async () => {
+        try {
+            data = await datastore.load();
+        } catch (e) {
+            err = `${e}`;
+            toast.show();
+        }
     };
 
     const formatNumber = (v: number) => {
@@ -169,7 +213,6 @@
         chart2?.resize();
     });
 
-    datastore.init();
     initView();
 
     $: if (chartDom1 && data) {
@@ -185,9 +228,26 @@
 </script>
 
 <main>
-    <button class="btn btn-info" on:click={onAddClick}
-        >{showAddArea ? "取消" : "添加"}</button
-    >
+    <div class="toast-container">
+        <div class="toast show text-bg-danger" bind:this={toastDom}>
+            <div class="d-flex">
+                <div class="toast-body">{err}</div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"
+                ></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-bar mb-3 align-items-center">
+        <span class="text-secondary fs-5">user: {api.getUserName()}</span>
+        <button class="btn btn-info" on:click={onAddClick}>添加资产</button>
+        <button class="btn btn-secondary" on:click={onLogoutClick}
+            >退出登录</button
+        >
+    </div>
 
     <div class="tbl-add border m-2 p-2" class:d-none={!showAddArea}>
         <div class="mb-1">
@@ -215,12 +275,17 @@
                 class="form-control"
                 id="ipt_value"
                 bind:value={iptValue}
+                on:keypress={onKeyPress}
             />
         </div>
-        <button
-            class="btn btn-primary w-100 mb-1 mt-1"
-            on:click={onAddConfirmClick}>添加</button
-        >
+        <div class="d-flex flex-row">
+            <button class="btn btn-primary w-75" on:click={onAddConfirmClick}
+                >确定</button
+            >
+            <button class="btn btn-secondary w-25 ms-3" on:click={onCancelClick}
+                >取消</button
+            >
+        </div>
     </div>
 
     <table class="table table-striped">
@@ -287,5 +352,11 @@
 
     .table {
         max-width: 800px;
+    }
+
+    .btn-bar {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
     }
 </style>

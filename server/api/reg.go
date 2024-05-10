@@ -14,6 +14,7 @@ type regParam struct {
 }
 
 type changePasswordParam struct {
+	OldPassword string `json:"oldPassword"`
 	NewPassword string `json:"newPassword"`
 }
 
@@ -72,9 +73,16 @@ var ChangePassword = WithVerifyUser(func(ctx *gin.Context, body, userName string
 	json.Unmarshal([]byte(body), param)
 	user := db.GetUser(userName)
 	if user == nil {
-		ctx.JSON(200, Result{
+		ctx.JSON(200, &Result{
 			Code: -1,
 			Msg:  "账号不存在",
+		})
+		return
+	}
+	if user.Password != param.OldPassword {
+		ctx.JSON(200, &Result{
+			Code: -1,
+			Msg:  "原密码不正确",
 		})
 		return
 	}

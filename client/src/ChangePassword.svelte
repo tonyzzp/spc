@@ -77,13 +77,6 @@
 </form>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1em;
-    }
-
     form {
         min-width: 500px;
         max-width: 800px;

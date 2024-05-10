@@ -249,7 +249,7 @@
     <button class="btn btn-secondary" on:click={onLogoutClick}>退出登录</button>
 </div>
 
-<div class="border m-2 p-2" class:d-none={!showAddArea}>
+<div class="border m-2 p-2 w-100" class:d-none={!showAddArea}>
     <div class="mb-1">
         <label for="ipt_name" class="form-label">名称</label>
         <input

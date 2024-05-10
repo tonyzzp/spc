@@ -1,0 +1,30 @@
+name: build docker image
+
+on:
+  push:
+    branches: ["master"]
+
+concurrency:
+  cancel-in-progress: true
+  group: build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: |
+          docker login \
+            -u tonyzzp@qq.com \
+            -p ${{secrets.DOCKER_PASSWORD}} \
+            ${{vars.DOCKER_REGISTRY}}  
+          docker build . --file Dockerfile \
+            --tag ${{vars.DOCKER_REGISTRY}}/tonyzzp/spc \
+            --build-arg GITHUB_SHA=${{github.sha}} \
+          docker push ${{vars.DOCKER_REGISTRY}}/tonyzzp/spc
+
+      - name: restart server
+        run: curl "http://a.veikr.com:8000/action/restartserver?x-token=${{secrets.SERVER_TOOLS_TOKEN}}&file=tonyzzp_spc"

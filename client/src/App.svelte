@@ -24,13 +24,13 @@
 </script>
 
 <main>
-    {#if routePath == "/login"}
-        <Login />
-    {:else if routePath == "/reg"}
+    {#if routePath == "/reg"}
         <Reg />
     {:else if routePath == "/dash"}
         <Dashboard />
     {:else if routePath == "/changePassword"}
         <ChangePassword />
+    {:else}
+        <Login />
     {/if}
 </main>

@@ -12,6 +12,7 @@ export namespace api {
     }
 
     export interface ChangePasswordParam {
+        oldPassword: string,
         newPassword: string
     }
 
@@ -89,8 +90,9 @@ export namespace api {
         return post("/api/login", param)
     }
 
-    export function changePassword(newPassword: string): Promise<BaseResult> {
+    export function changePassword(oldPassword: string, newPassword: string): Promise<BaseResult> {
         let param: ChangePasswordParam = {
+            oldPassword: oldPassword,
             newPassword: newPassword
         }
         return post("/api/changePassword", param)

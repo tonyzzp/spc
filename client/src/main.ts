@@ -1,28 +1,25 @@
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
+import "./app.css"
 import App from "./App.svelte"
 import { api } from "./api"
 import { goto } from "./route"
 
 console.info("location.hash", location.hash)
-let target = ""
-if (location.hash != "#/login" && location.hash != "#/reg") {
-  let token = localStorage.getItem("spc-token")
-  console.info("token", token)
-  if (token) {
-    api.setToken(token)
-    target = "/dash"
+
+let token = localStorage.getItem("spc-token") || ""
+api.setToken(token)
+let hash = location.hash
+if (hash) {
+  if (hash == "#/dash" && !token) {
+    goto("/login")
+  } else {
+    goto(hash.substring(1))
   }
-} else if (location.hash == "#/login") {
-  target = "/login"
-} else if (location.hash == "#/reg") {
-  target = "/reg"
+} else {
+  goto("/login")
 }
-if (!target) {
-  target = "/login"
-}
-goto(target)
 
 const app = new App({
   target: document.getElementById('app')!,

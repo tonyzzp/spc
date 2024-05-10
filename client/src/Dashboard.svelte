@@ -13,6 +13,7 @@
     import { goto } from "./route";
     import type { etypes } from "./types";
     import { Toast } from "bootstrap";
+    import Navi from "./Navi.svelte";
 
     let chartDom1: HTMLElement;
     let chartDom2: HTMLElement;
@@ -227,115 +228,106 @@
     }
 </script>
 
-<main>
-    <div class="toast-container">
-        <div class="toast show text-bg-danger" bind:this={toastDom}>
-            <div class="d-flex">
-                <div class="toast-body">{err}</div>
-                <button
-                    type="button"
-                    class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast"
-                ></button>
-            </div>
+<Navi />
+<h1>我的资产</h1>
+<div class="toast-container">
+    <div class="toast show text-bg-danger" bind:this={toastDom}>
+        <div class="d-flex">
+            <div class="toast-body">{err}</div>
+            <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast"
+            ></button>
         </div>
     </div>
+</div>
 
-    <div class="btn-bar mb-3 align-items-center">
-        <span class="text-secondary fs-5">user: {api.getUserName()}</span>
-        <button class="btn btn-info" on:click={onAddClick}>添加资产</button>
-        <button class="btn btn-secondary" on:click={onLogoutClick}
-            >退出登录</button
+<div class="btn-bar mb-3 align-items-center">
+    <span class="text-secondary fs-5">user: {api.getUserName()}</span>
+    <button class="btn btn-info" on:click={onAddClick}>添加资产</button>
+    <button class="btn btn-secondary" on:click={onLogoutClick}>退出登录</button>
+</div>
+
+<div class="tbl-add border m-2 p-2" class:d-none={!showAddArea}>
+    <div class="mb-1">
+        <label for="ipt_name" class="form-label">名称</label>
+        <input
+            type="text"
+            class="form-control"
+            id="ipt_name"
+            bind:value={iptName}
+        />
+    </div>
+    <div class="mb-1">
+        <label for="ipt_type" class="form-label">类别</label>
+        <input
+            type="text"
+            class="form-control"
+            id="ipt_type"
+            bind:value={iptType}
+        />
+    </div>
+    <div class="mb-1">
+        <label for="ipt_value" class="form-label">总金额</label>
+        <input
+            type="number"
+            class="form-control"
+            id="ipt_value"
+            bind:value={iptValue}
+            on:keypress={onKeyPress}
+        />
+    </div>
+    <div class="d-flex flex-row">
+        <button class="btn btn-primary w-75" on:click={onAddConfirmClick}
+            >确定</button
+        >
+        <button class="btn btn-secondary w-25 ms-3" on:click={onCancelClick}
+            >取消</button
         >
     </div>
+</div>
 
-    <div class="tbl-add border m-2 p-2" class:d-none={!showAddArea}>
-        <div class="mb-1">
-            <label for="ipt_name" class="form-label">名称</label>
-            <input
-                type="text"
-                class="form-control"
-                id="ipt_name"
-                bind:value={iptName}
-            />
-        </div>
-        <div class="mb-1">
-            <label for="ipt_type" class="form-label">类别</label>
-            <input
-                type="text"
-                class="form-control"
-                id="ipt_type"
-                bind:value={iptType}
-            />
-        </div>
-        <div class="mb-1">
-            <label for="ipt_value" class="form-label">总金额</label>
-            <input
-                type="number"
-                class="form-control"
-                id="ipt_value"
-                bind:value={iptValue}
-                on:keypress={onKeyPress}
-            />
-        </div>
-        <div class="d-flex flex-row">
-            <button class="btn btn-primary w-75" on:click={onAddConfirmClick}
-                >确定</button
-            >
-            <button class="btn btn-secondary w-25 ms-3" on:click={onCancelClick}
-                >取消</button
-            >
-        </div>
-    </div>
-
-    <table class="table table-striped">
-        <thead>
+<table class="table table-striped table-hover align-middle">
+    <thead>
+        <tr>
+            <th>名称</th>
+            <th>金额</th>
+            <th>分类</th>
+            <th>修改</th>
+            <th>删除</th>
+        </tr>
+    </thead>
+    <tbody>
+        {#each data as item}
             <tr>
-                <th>名称</th>
-                <th>金额</th>
-                <th>分类</th>
-                <th>修改</th>
-                <th>删除</th>
+                <td>{item.name}</td>
+                <td>{item.value.toLocaleString("en-us")}</td>
+                <td>{item.type}</td>
+                <td>
+                    <button
+                        class="btn btn-light"
+                        on:click={onEditClick.bind(null, item)}
+                        ><i class="bi bi-pencil-square"></i></button
+                    >
+                </td>
+                <td>
+                    <button
+                        class="btn btn-light"
+                        on:click={onDelClick.bind(null, item)}
+                    >
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {#each data as item}
-                <tr>
-                    <td>{item.name}</td>
-                    <td>{item.value.toLocaleString("en-us")}</td>
-                    <td>{item.type}</td>
-                    <td>
-                        <button
-                            class="btn btn-light"
-                            on:click={onEditClick.bind(null, item)}
-                            ><i class="bi bi-pencil-square"></i></button
-                        >
-                    </td>
-                    <td>
-                        <button
-                            class="btn btn-light"
-                            on:click={onDelClick.bind(null, item)}
-                        >
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
+        {/each}
+    </tbody>
+</table>
 
-    <div bind:this={chartDom1} class="chart_dom mt-3"></div>
-    <div bind:this={chartDom2} class="chart_dom mt-3"></div>
-</main>
+<div bind:this={chartDom1} class="chart_dom mt-3"></div>
+<div bind:this={chartDom2} class="chart_dom mt-3"></div>
 
 <style>
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1em;
-    }
-
     .chart_dom {
         width: 80%;
         max-width: 600px;

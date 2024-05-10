@@ -27,9 +27,8 @@
     };
 </script>
 
-<h1 class="text-center mt-3 mb-3">登录</h1>
-
 <main>
+    <h1 class="text-center mt-3 mb-3">登录</h1>
     <form class="border border-2 rounded-2 p-2 m-2">
         <div class="mb-2">
             <label for="ipt_user" class="form-label">用户名</label>

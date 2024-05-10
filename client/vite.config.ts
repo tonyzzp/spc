@@ -8,11 +8,21 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				manualChunks: function (id, meta) {
-					console.info(id, meta)
+					console.info(id)
 					{
 						let index = id.indexOf(".pnpm/")
 						if (index > -1) {
 							let index2 = id.indexOf("/", index + 6)
+							if (index2 > -1) {
+								let rtn = id.substring(index + 6, index2)
+								if (rtn) {
+									return rtn
+								}
+							}
+						}
+						index = id.indexOf("node_modules/")
+						if (index > -1) {
+							let index2 = id.indexOf("/", index + 13)
 							if (index2 > -1) {
 								let rtn = id.substring(index + 6, index2)
 								if (rtn) {

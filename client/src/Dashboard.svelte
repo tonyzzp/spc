@@ -249,7 +249,7 @@
     <button class="btn btn-secondary" on:click={onLogoutClick}>退出登录</button>
 </div>
 
-<div class="tbl-add border m-2 p-2" class:d-none={!showAddArea}>
+<div class="border m-2 p-2" class:d-none={!showAddArea}>
     <div class="mb-1">
         <label for="ipt_name" class="form-label">名称</label>
         <input
@@ -329,26 +329,21 @@
 
 <style>
     .chart_dom {
-        width: 80%;
-        max-width: 600px;
+        width: 100%;
         aspect-ratio: 1;
         border-width: 1px;
         border-color: black;
         border-style: solid;
-    }
-
-    .tbl-add {
-        min-width: 500px;
-        max-width: 800px;
-    }
-
-    .table {
-        max-width: 800px;
+        min-width: 300px;
     }
 
     .btn-bar {
         display: flex;
         flex-direction: row;
         gap: 10px;
+    }
+
+    table {
+        min-width: 300px;
     }
 </style>

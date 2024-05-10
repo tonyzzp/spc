@@ -33,7 +33,7 @@
 
 <Navi />
 <h1>修改密码</h1>
-<form class="border border-2 rounded-2 p-2 m-2">
+<div class="border border-2 rounded-2 p-2 m-2 w-100">
     <div class="mb-2">
         <label for="ipt_oldpassword" class="form-label">旧密码</label>
         <input
@@ -74,13 +74,4 @@
     <button class="btn btn-primary mt-2" type="button" on:click={onConfirmClick}
         >确定</button
     >
-</form>
-
-<style>
-    form {
-        min-width: 500px;
-        max-width: 800px;
-        display: flex;
-        flex-direction: column;
-    }
-</style>
+</div>

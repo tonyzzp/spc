@@ -27,6 +27,7 @@
     let iptName = "";
     let iptType = "";
     let iptValue = "";
+    let showOther = localStorage.getItem("spc-show-other") == "true";
     let showAddArea = false;
     let err = "";
     let toastDom: HTMLElement;
@@ -53,6 +54,10 @@
         shareDialog.hide();
     }
 
+    $: {
+        localStorage.setItem("spc-show-other", showOther ? "true" : "false");
+    }
+
     const onAddClick = () => {
         iptName = "";
         iptType = "";
@@ -69,7 +74,7 @@
         }
         let index = data.findIndex((v) => v.name == iptName);
         if (index > -1) {
-            data = data.splice(index, 1);
+            data.splice(index, 1);
         }
         data = [
             ...data,
@@ -140,6 +145,8 @@
             return (v / 10000).toFixed(1) + " 万";
         } else if (v >= 1000) {
             return (v / 1000).toFixed(1) + " 千";
+        } else {
+            return v.toString();
         }
     };
 
@@ -202,9 +209,33 @@
                 list = [];
                 group[stock.type] = list;
             }
-            list.push(stock);
+            list.push({ ...stock });
             total += stock.value;
         });
+        if (showOther) {
+            let otherValue = 0;
+            let others: datastore.Item[] = [];
+            for (let type in group) {
+                let list = group[type];
+                for (let i = list.length - 1; i >= 0; i--) {
+                    let item = list[i];
+                    if (item.value / total < 0.05) {
+                        list.splice(i, 1);
+                        others.push(item);
+                        otherValue += item.value;
+                    }
+                }
+            }
+            if (otherValue) {
+                group.others = [
+                    {
+                        name: "others",
+                        type: "others",
+                        value: otherValue,
+                    },
+                ];
+            }
+        }
 
         for (let type in group) {
             let list = group[type];
@@ -236,7 +267,7 @@
 
     initView();
 
-    $: if (chartDom1 && data) {
+    $: if (chartDom1 && data && showOther != null) {
         if (!chart1) {
             chart1 = init(chartDom1);
         }
@@ -267,6 +298,17 @@
     <span class="text-secondary fs-5">user: {api.getUserName()}</span>
     <button class="btn btn-info" on:click={onAddClick}>添加资产</button>
     <button class="btn btn-secondary" on:click={onLogoutClick}>退出登录</button>
+    <div class="form-check">
+        <input
+            class="form-check-input"
+            type="checkbox"
+            id="flexCheckChecked"
+            bind:checked={showOther}
+        />
+        <label class="form-check-label" for="flexCheckChecked"
+            >低于5%归为其他</label
+        >
+    </div>
 </div>
 
 <div class="border m-2 p-2 w-100" class:d-none={!showAddArea}>

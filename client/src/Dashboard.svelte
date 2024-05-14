@@ -188,14 +188,15 @@
     </div>
 </div>
 
-<table class="table table-striped table-hover align-middle">
+<table class="table table-striped align-middle">
     <thead>
         <tr>
             <th>名称</th>
             <th>金额</th>
             <th>分类</th>
-            <th>修改</th>
-            <th>删除</th>
+            <!-- <th>修改</th>
+            <th>删除</th> -->
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -205,19 +206,31 @@
                 <td>{item.value.toLocaleString("en-us")}</td>
                 <td>{item.type}</td>
                 <td>
-                    <button
-                        class="btn btn-light"
-                        on:click={onEditClick.bind(null, item)}
-                        ><i class="bi bi-pencil-square"></i></button
-                    >
-                </td>
-                <td>
-                    <button
-                        class="btn btn-light"
-                        on:click={onDelClick.bind(null, item)}
-                    >
-                        <i class="bi bi-trash"></i>
-                    </button>
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown">操作</button
+                        >
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button
+                                    class="dropdown-item"
+                                    type="button"
+                                    on:click={onEditClick.bind(null, item)}
+                                    ><i class="bi bi-pencil-square"></i> 修改</button
+                                >
+                            </li>
+                            <li>
+                                <button
+                                    class="dropdown-item"
+                                    type="button"
+                                    on:click={onDelClick.bind(null, item)}
+                                    ><i class="bi bi-trash"></i> 删除</button
+                                >
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         {/each}

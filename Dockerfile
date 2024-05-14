@@ -22,4 +22,4 @@ VOLUME [ "/data" ]
 COPY --from=buildserver /build/server /app/server
 COPY --from=buildclient /build/dist /app/static
 
-CMD ["/app/server"]
+ENTRYPOINT [ "/app/server" ]

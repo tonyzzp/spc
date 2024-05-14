@@ -11,6 +11,7 @@
     let chartDom: HTMLElement;
     let chart: EChartsType;
     let imgContent = "";
+    let shareDialog: ShareDailog;
 
     let formatter = function (v: any) {
         if (percent) {
@@ -83,6 +84,7 @@
                         icon: `path://${ICON_SHARE}`,
                         onclick: (_: any, extension: any) => {
                             imgContent = extension.getDataURL();
+                            shareDialog.show();
                         },
                     },
                 },
@@ -102,4 +104,4 @@
 </script>
 
 <div bind:this={chartDom} class="chart_dom mt-3"></div>
-<ShareDailog {imgContent} />
+<ShareDailog {imgContent} bind:this={shareDialog} />

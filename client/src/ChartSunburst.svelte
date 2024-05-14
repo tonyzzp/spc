@@ -19,6 +19,7 @@
     let chartDom: HTMLElement;
     let chart: EChartsType;
     let shareImgContent: string;
+    let shareDialog: ShareDailog;
 
     const renderChart = () => {
         let formatter = function (v: any) {
@@ -53,6 +54,7 @@
                         icon: `path://${ICON_SHARE}`,
                         onclick: (_: any, extension: any) => {
                             shareImgContent = extension.getDataURL();
+                            shareDialog.show();
                         },
                     },
                 },
@@ -142,4 +144,4 @@
 </script>
 
 <div bind:this={chartDom} class="chart_dom mt-3"></div>
-<ShareDailog imgContent={shareImgContent} />
+<ShareDailog imgContent={shareImgContent} bind:this={shareDialog} />

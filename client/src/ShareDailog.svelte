@@ -9,11 +9,11 @@
         if (!shareDialog) {
             shareDialog = new Modal(shareDom);
         }
-        shareDom.addEventListener("hidden.bs.modal", (e) => {
-            console.info(e);
-            imgContent = "";
-        });
     }
+
+    export const show = () => {
+        shareDialog?.show();
+    };
 
     $: if (shareDialog) {
         if (imgContent) {

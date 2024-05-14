@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Modal } from "bootstrap";
     import { init, type EChartsType } from "echarts";
     import { SunburstChart } from "echarts/charts";
     import {
@@ -9,10 +8,9 @@
     } from "echarts/components";
     import * as echarts from "echarts/core";
     import { CanvasRenderer } from "echarts/renderers";
+    import ShareDailog from "./ShareDailog.svelte";
     import type { datastore } from "./datastore";
-
-    const ICON_SHARE =
-        "M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z";
+    import { ICON_SHARE, formatNumber } from "./utils";
 
     export let data: datastore.Item[];
     export let showOther: boolean;
@@ -20,21 +18,7 @@
 
     let chartDom: HTMLElement;
     let chart: EChartsType;
-    let shareDom: HTMLElement;
     let shareImgContent: string;
-    let shareDialog: Modal;
-
-    const formatNumber = (v: number) => {
-        if (v >= 1000000) {
-            return (v / 1000000).toFixed(2) + " 百万";
-        } else if (v >= 10000) {
-            return (v / 10000).toFixed(1) + " 万";
-        } else if (v >= 1000) {
-            return (v / 1000).toFixed(1) + " 千";
-        } else {
-            return v.toString();
-        }
-    };
 
     const renderChart = () => {
         let formatter = function (v: any) {
@@ -69,7 +53,6 @@
                         icon: `path://${ICON_SHARE}`,
                         onclick: (_: any, extension: any) => {
                             shareImgContent = extension.getDataURL();
-                            shareDialog.show();
                         },
                     },
                 },
@@ -150,11 +133,6 @@
         chart?.resize();
     });
 
-    $: if (shareDom) {
-        shareDialog = new Modal(shareDom);
-        shareDialog.hide();
-    }
-
     $: if (chartDom && data && showOther != null) {
         if (!chart) {
             chart = init(chartDom);
@@ -164,37 +142,4 @@
 </script>
 
 <div bind:this={chartDom} class="chart_dom mt-3"></div>
-<div class="modal" tabindex="-1" bind:this={shareDom}>
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">分享</h5>
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
-            </div>
-            <div class="modal-body">
-                <p>长按图片保存或者分享</p>
-                <div
-                    class="d-flex flex-column justify-content-center align-items-center"
-                >
-                    <img src={shareImgContent} class="w-100" alt="chart" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .chart_dom {
-        width: 100%;
-        aspect-ratio: 1;
-        border-width: 1px;
-        border-color: black;
-        border-style: solid;
-        min-width: 300px;
-    }
-</style>
+<ShareDailog imgContent={shareImgContent} />

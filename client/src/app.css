@@ -19,3 +19,12 @@ h1 {
     align-items: center;
     flex-direction: column;
 }
+
+.chart_dom {
+    width: 100%;
+    aspect-ratio: 1;
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    min-width: 300px;
+}

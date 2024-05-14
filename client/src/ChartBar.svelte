@@ -1,6 +1,8 @@
 <script lang="ts">
     import { init, type EChartsType } from "echarts";
+    import ShareDailog from "./ShareDailog.svelte";
     import type { datastore } from "./datastore";
+    import { ICON_SHARE, formatNumber } from "./utils";
 
     export let data: datastore.Item[];
     export let percent: boolean;
@@ -8,18 +10,7 @@
 
     let chartDom: HTMLElement;
     let chart: EChartsType;
-
-    const formatNumber = (v: number) => {
-        if (v >= 1000000) {
-            return (v / 1000000).toFixed(2) + " 百万";
-        } else if (v >= 10000) {
-            return (v / 10000).toFixed(1) + " 万";
-        } else if (v >= 1000) {
-            return (v / 1000).toFixed(1) + " 千";
-        } else {
-            return v.toString();
-        }
-    };
+    let imgContent = "";
 
     let formatter = function (v: any) {
         if (percent) {
@@ -73,6 +64,29 @@
             xAxis: {
                 type: "value",
             },
+            tooltip: {
+                show: false,
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    myShareImage: {
+                        show: true,
+                        title: "分享",
+                        icon: `path://${ICON_SHARE}`,
+                        onclick: (_: any, extension: any) => {
+                            imgContent = extension.getDataURL();
+                        },
+                    },
+                },
+            },
             series: [
                 {
                     type: "bar",
@@ -88,14 +102,4 @@
 </script>
 
 <div bind:this={chartDom} class="chart_dom mt-3"></div>
-
-<style>
-    .chart_dom {
-        width: 100%;
-        aspect-ratio: 1;
-        border-width: 1px;
-        border-color: black;
-        border-style: solid;
-        min-width: 300px;
-    }
-</style>
+<ShareDailog {imgContent} />

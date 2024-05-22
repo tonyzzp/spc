@@ -3,8 +3,8 @@ import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
 import "./app.css"
 import App from "./App.svelte"
-import { api } from "./api"
-import { goto } from "./route"
+import { api } from "./common/api"
+import { goto } from "./common/route"
 
 console.info("location.hash", location.hash)
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { route } from "./route";
+    import { route } from "../common/route";
 
     let routePath = $route;
 </script>

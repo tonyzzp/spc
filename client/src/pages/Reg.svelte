@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { api } from "./api";
-    import { goto } from "./route";
+    import { api } from "../common/api";
+    import { goto } from "../common/route";
 
     let iptUser = "";
     let iptPassword = "";

@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Login from "./Login.svelte";
-    import Dashboard from "./Dashboard.svelte";
-    import { goto, route } from "./route";
-    import Reg from "./Reg.svelte";
-    import ChangePassword from "./ChangePassword.svelte";
+    import Login from "./pages/Login.svelte";
+    import Dashboard from "./pages/Dashboard.svelte";
+    import { goto, route } from "./common/route";
+    import Reg from "./pages/Reg.svelte";
+    import ChangePassword from "./pages/ChangePassword.svelte";
 
     let routePath = $route;
     $: {

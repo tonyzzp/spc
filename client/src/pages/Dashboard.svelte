@@ -1,12 +1,12 @@
 <script lang="ts">
     import { Toast } from "bootstrap";
-    import ChartBar from "./ChartBar.svelte";
-    import ChartSunburst from "./ChartSunburst.svelte";
-    import Navi from "./Navi.svelte";
-    import { api } from "./api";
-    import { datastore } from "./datastore";
-    import { goto } from "./route";
-    import { sortData } from "./utils";
+    import ChartBar from "../components/ChartBar.svelte";
+    import ChartSunburst from "../components/ChartSunburst.svelte";
+    import Navi from "../components/Navi.svelte";
+    import { api } from "../common/api";
+    import { datastore } from "../common/datastore";
+    import { goto } from "../common/route";
+    import { sortData } from "../common/utils";
 
     let data: datastore.Item[] = [];
     let iptName = "";

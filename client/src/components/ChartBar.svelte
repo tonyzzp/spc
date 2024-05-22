@@ -1,8 +1,8 @@
 <script lang="ts">
     import { init, type EChartsType } from "echarts";
     import ShareDailog from "./ShareDailog.svelte";
-    import type { datastore } from "./datastore";
-    import { ICON_SHARE, formatNumber } from "./utils";
+    import type { datastore } from "../common/datastore";
+    import { ICON_SHARE, formatNumber } from "../common/utils";
 
     export let data: datastore.Item[];
     export let percent: boolean;

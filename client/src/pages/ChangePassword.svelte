@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Navi from "./Navi.svelte";
-    import { api } from "./api";
-    import { goto } from "./route";
+    import Navi from "../components/Navi.svelte";
+    import { api } from "../common/api";
+    import { goto } from "../common/route";
 
     let iptOldPassword = "";
     let iptPassword1 = "";

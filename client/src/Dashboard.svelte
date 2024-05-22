@@ -6,6 +6,7 @@
     import { api } from "./api";
     import { datastore } from "./datastore";
     import { goto } from "./route";
+    import { sortData } from "./utils";
 
     let data: datastore.Item[] = [];
     let iptName = "";
@@ -60,6 +61,7 @@
                 value: parseInt(iptValue),
             },
         ];
+        sortData(data);
         iptName = "";
         iptType = "";
         iptValue = "";
@@ -108,6 +110,7 @@
     const initView = async () => {
         try {
             data = await datastore.load();
+            sortData(data);
         } catch (e) {
             err = `${e}`;
             toast.show();

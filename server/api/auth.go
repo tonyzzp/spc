@@ -12,16 +12,25 @@ import (
 
 var _tokens = &sync.Map{}
 
-func setToken(user string, token string) {
-	_tokens.Store(user, token)
+func addToken(user string, token string) {
+	v, _ := _tokens.LoadOrStore(user, []string{})
+	list := v.([]string)
+	list = append(list, token)
+	_tokens.Store(user, list)
 }
 
-func getToken(user string) string {
-	token, ok := _tokens.Load(user)
-	if ok {
-		return token.(string)
+func checkToken(user string, token string) bool {
+	v, ok := _tokens.Load(user)
+	if !ok {
+		return false
 	}
-	return ""
+	list := v.([]string)
+	for _, item := range list {
+		if item == token {
+			return true
+		}
+	}
+	return false
 }
 
 type HandlerFunc func(ctx *gin.Context, body string)
@@ -55,7 +64,7 @@ func WithVerifyUser(handler HandlerFuncUser) HandlerFunc {
 		strs := strings.Split(_token, ".")
 		userName := strs[0]
 		token := strs[1]
-		if getToken(userName) != token {
+		if !checkToken(userName, token) {
 			ctx.JSON(200, &Result{
 				Code: -1,
 				Msg:  "token不正确，请重新登录",

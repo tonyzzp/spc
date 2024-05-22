@@ -59,7 +59,7 @@ func Login(ctx *gin.Context, body string) {
 		return
 	}
 	token := tools.RandomString(32)
-	setToken(param.UserName, token)
+	addToken(param.UserName, token)
 	ctx.JSON(200, &Result{
 		Code: 0,
 		Data: &loginResult{

@@ -6,9 +6,10 @@
     import { api } from "../common/api";
     import { datastore } from "../common/datastore";
     import { goto } from "../common/route";
-    import { sortData } from "../common/utils";
+    import { formatNumber, sortData } from "../common/utils";
 
     let data: datastore.Item[] = [];
+    let totalValue = 0;
     let iptName = "";
     let iptType = "";
     let iptValue = "";
@@ -33,6 +34,10 @@
 
     $: {
         localStorage.setItem("spc-show-other", showOther ? "true" : "false");
+    }
+
+    $: if (data != null && data.length > 0) {
+        totalValue = data.reduce((rtn, current) => rtn + current.value, 0);
     }
 
     const onAddClick = () => {
@@ -239,6 +244,8 @@
         {/each}
     </tbody>
 </table>
+<b class="d-block text-end w-100">总额: {formatNumber(totalValue)}</b>
+<br />
 
 <ChartSunburst {data} percent={false} {showOther} />
 <ChartSunburst {data} percent={true} {showOther} />

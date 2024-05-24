@@ -38,6 +38,8 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"^/api/.*": "http://localhost:80"
-		}
+		},
+		host: "0.0.0.0",
+		port: 10000,
 	}
 })

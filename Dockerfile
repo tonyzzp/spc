@@ -12,14 +12,14 @@ RUN cd /build && npm i && npm run build
 
 FROM golang:alpine as buildserver
 COPY server /build
-RUN cd /build && go get && go build -o server .
+RUN cd /build && go get && go build -o spc .
 
 
 FROM alpine
 EXPOSE 80
 ENV ISDOCKER=true
 VOLUME [ "/data" ]
-COPY --from=buildserver /build/server /app/server
+COPY --from=buildserver /build/spc /app/spc
 COPY --from=buildclient /build/dist /app/static
 
-ENTRYPOINT [ "/app/server" ]
+ENTRYPOINT [ "/app/spc" ]

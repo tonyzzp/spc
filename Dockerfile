@@ -12,6 +12,7 @@ RUN cd /build && npm i && npm run build
 
 FROM golang:alpine as buildserver
 COPY server /build
+ENV GOPROXY=goproxy.cn,goproxy.io
 RUN cd /build && go get && go build -o spc .
 
 

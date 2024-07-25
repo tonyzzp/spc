@@ -15,6 +15,8 @@ services:
     container_name: spc
     image: registry.cn-hongkong.aliyuncs.com/tonyzzp/spc
     restart: always
+    ports:
+      - "80:80"
     volumes:
       - ./data:/data
 

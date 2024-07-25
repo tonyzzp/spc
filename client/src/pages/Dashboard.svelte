@@ -45,12 +45,6 @@
         iptType = "";
         iptValue = "";
         showAddArea = !showAddArea;
-        if (showAddArea) {
-            document.querySelector("#edit-area")?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
-        }
     };
 
     const onAddConfirmClick = () => {
@@ -90,6 +84,17 @@
         iptType = item.type;
         iptValue = item.value.toString();
         showAddArea = true;
+        let area = document.querySelector("#edit-area");
+        if (area) {
+            setTimeout(() => {
+                area.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }, 1);
+        } else {
+            console.warn("edit-area not found");
+        }
     };
 
     const onDelClick = (item: datastore.Item) => {

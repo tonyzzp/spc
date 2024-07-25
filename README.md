@@ -5,7 +5,7 @@
 
 ## 部署
 ```bash
-docker run -itd -v ./data:/data registry.cn-hongkong.aliyuncs.com/tonyzzp/spc
+docker run -itd -v ./data:/data -p 80:80 registry.cn-hongkong.aliyuncs.com/tonyzzp/spc
 ```
 
 docker-compose.yaml

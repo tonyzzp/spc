@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { init, type EChartsType } from "echarts";
     import { SunburstChart } from "echarts/charts";
     import {
         TitleComponent,
@@ -8,16 +7,16 @@
     } from "echarts/components";
     import * as echarts from "echarts/core";
     import { CanvasRenderer } from "echarts/renderers";
-    import ShareDailog from "./ShareDailog.svelte";
     import type { datastore } from "../common/datastore";
     import { ICON_SHARE, formatNumber } from "../common/utils";
+    import ShareDailog from "./ShareDailog.svelte";
 
     export let data: datastore.Item[];
     export let showOther: boolean;
     export let percent: boolean;
 
     let chartDom: HTMLElement;
-    let chart: EChartsType;
+    let chart: echarts.EChartsType;
     let shareImgContent: string;
     let shareDialog: ShareDailog;
 
@@ -137,7 +136,7 @@
 
     $: if (chartDom && data && showOther != null) {
         if (!chart) {
-            chart = init(chartDom);
+            chart = echarts.init(chartDom);
         }
         renderChart();
     }

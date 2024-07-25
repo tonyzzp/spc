@@ -1,4 +1,3 @@
-import type DataStore from "echarts/types/src/data/DataStore.js";
 import type { datastore } from "./datastore";
 
 export const ICON_SHARE =

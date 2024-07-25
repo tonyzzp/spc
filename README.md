@@ -1,4 +1,4 @@
-# spc (stock-portfolio charts)
+# spc (stock portfolio charts)
 
 用于统计各股票持仓比例，用图表展示
 

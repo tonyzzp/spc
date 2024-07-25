@@ -9,25 +9,29 @@ export default defineConfig({
 			output: {
 				manualChunks: function (id, meta) {
 					console.info(id)
-					{
-						let index = id.indexOf(".pnpm/")
-						if (index > -1) {
-							let index2 = id.indexOf("/", index + 6)
-							if (index2 > -1) {
-								let rtn = id.substring(index + 6, index2)
-								if (rtn) {
-									return rtn
+					let index = id.indexOf(".pnpm/")
+					if (index > -1) {
+						let index2 = id.indexOf("/", index + 6)
+						if (index2 > -1) {
+							let rtn = id.substring(index + 6, index2)
+							if (rtn) {
+								if (rtn.indexOf("@") == 0) {
+									rtn = rtn.substring(1)
 								}
+								return rtn
 							}
 						}
-						index = id.indexOf("node_modules/")
-						if (index > -1) {
-							let index2 = id.indexOf("/", index + 13)
-							if (index2 > -1) {
-								let rtn = id.substring(index + 6, index2)
-								if (rtn) {
-									return rtn
+					}
+					index = id.indexOf("node_modules/")
+					if (index > -1) {
+						let index2 = id.indexOf("/", index + 13)
+						if (index2 > -1) {
+							let rtn = id.substring(index + 13, index2)
+							if (rtn) {
+								if (rtn.indexOf("@") == 0) {
+									rtn = rtn.substring(1)
 								}
+								return rtn
 							}
 						}
 					}

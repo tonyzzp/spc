@@ -45,6 +45,12 @@
         iptType = "";
         iptValue = "";
         showAddArea = !showAddArea;
+        if (showAddArea) {
+            document.querySelector("#edit-area")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
     };
 
     const onAddConfirmClick = () => {
@@ -157,7 +163,7 @@
     </div>
 </div>
 
-<div class="border m-2 p-2 w-100" class:d-none={!showAddArea}>
+<div class="border m-2 p-2 w-100" class:d-none={!showAddArea} id="edit-area">
     <div class="mb-1">
         <label for="ipt_name" class="form-label">名称</label>
         <input

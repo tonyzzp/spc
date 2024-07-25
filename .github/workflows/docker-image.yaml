@@ -16,7 +16,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - used: actions/setup-go@v5
+      - uses: actions/setup-go@v5
         widh:
           go-version: "1.22.2"
           check-latest: true

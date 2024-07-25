@@ -16,6 +16,12 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
+      - used: actions/setup-go@v5
+        widh:
+          go-version: "1.22.2"
+          check-latest: true
+          cache-dependency-path: server/go.sum
+
       - name: Docker Login
         uses: docker/login-action@v2.1.0
         with:

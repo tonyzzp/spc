@@ -1,29 +1,15 @@
-<script lang="ts">
-    import { init, type EChartsType } from "echarts/core";
-    import type { datastore } from "../common/datastore";
-    import { ICON_SHARE, formatNumber } from "../common/utils";
-    import ShareDailog from "./ShareDailog.svelte";
-
-    export let data: datastore.Item[];
-    export let percent: boolean;
-    export let showOther: boolean;
-
-    let chartDom: HTMLElement;
-    let chart: EChartsType;
-    let imgContent = "";
-    let shareDialog: ShareDailog;
-
-    let formatter = function (v: any) {
-        if (percent) {
-            return (v.value * 100).toFixed(1) + "%";
-        } else {
-            return `${formatNumber(v.value)}`;
-        }
-    };
-
-    $: if (chartDom && data && showOther != null) {
+<script lang="ts" context="module">
+    function createChart(
+        chart: EChartsType,
+        dom: HTMLElement,
+        data: datastore.Item[],
+        showOther: boolean,
+        percent: boolean,
+        formatter: any,
+        onShareClick: (extension: any) => void,
+    ) {
         if (!chart) {
-            chart = init(chartDom);
+            chart = init(dom);
         }
         let newData = data.map((v) => {
             return { ...v };
@@ -52,7 +38,28 @@
                 v.value = v.value / total;
             });
         }
+        let feature: any = {
+            // saveAsImage: {
+            //     show: true,
+            // },
+            // dataView: {
+            //     show: true,
+            //     readOnly: true,
+            // },
+        };
+        if (onShareClick) {
+            feature.myShareImage = {
+                show: true,
+                title: "分享",
+                icon: `path://${ICON_SHARE}`,
+                onclick: (_: any, extension: any) => {
+                    onShareClick(extension);
+                },
+            };
+        }
         chart.setOption({
+            backgroundColor: "white",
+            animation: false,
             title: {
                 show: true,
                 text: percent ? "资产占比" : "资产详情",
@@ -70,24 +77,7 @@
             },
             toolbox: {
                 show: true,
-                feature: {
-                    saveAsImage: {
-                        show: true,
-                    },
-                    dataView: {
-                        show: true,
-                        readOnly: true,
-                    },
-                    myShareImage: {
-                        show: true,
-                        title: "分享",
-                        icon: `path://${ICON_SHARE}`,
-                        onclick: (_: any, extension: any) => {
-                            imgContent = extension.getDataURL();
-                            shareDialog.show();
-                        },
-                    },
-                },
+                feature: feature,
             },
             series: [
                 {
@@ -100,6 +90,61 @@
                 },
             ],
         });
+        return chart;
+    }
+</script>
+
+<script lang="ts">
+    import { init, type EChartsType } from "echarts/core";
+    import type { datastore } from "../common/datastore";
+    import { ICON_SHARE, formatNumber } from "../common/utils";
+    import ShareDailog from "./ShareDailog.svelte";
+
+    export let data: datastore.Item[];
+    export let percent: boolean;
+    export let showOther: boolean;
+
+    let chartDom: HTMLElement;
+    let chart: EChartsType;
+    let imgContent = "";
+    let shareDialog: ShareDailog;
+
+    let formatter = function (v: any) {
+        if (percent) {
+            return (v.value * 100).toFixed(1) + "%";
+        } else {
+            return `${formatNumber(v.value)}`;
+        }
+    };
+
+    $: if (chartDom && data && showOther != null) {
+        chart = createChart(
+            chart,
+            chartDom,
+            data,
+            showOther,
+            percent,
+            formatter,
+            (extension) => {
+                let dom = document.createElement("canvas");
+                dom.width = 1000;
+                dom.height = 1000;
+                dom.style.backgroundColor = "white";
+                createChart(
+                    null,
+                    dom,
+                    data,
+                    showOther,
+                    percent,
+                    formatter,
+                    null,
+                );
+                setTimeout(() => {
+                    imgContent = dom.toDataURL();
+                    shareDialog.show();
+                }, 100);
+            },
+        );
     }
 </script>
 

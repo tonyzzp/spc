@@ -1,12 +1,5 @@
 <script lang="ts">
-    import { SunburstChart } from "echarts/charts";
-    import {
-        TitleComponent,
-        ToolboxComponent,
-        TooltipComponent,
-    } from "echarts/components";
     import * as echarts from "echarts/core";
-    import { CanvasRenderer } from "echarts/renderers";
     import type { datastore } from "../common/datastore";
     import { ICON_SHARE, formatNumber } from "../common/utils";
     import ShareDailog from "./ShareDailog.svelte";
@@ -123,13 +116,6 @@
         chart.setOption(option);
     };
 
-    echarts.use([
-        SunburstChart,
-        TitleComponent,
-        TooltipComponent,
-        ToolboxComponent,
-        CanvasRenderer,
-    ]);
     window.addEventListener("resize", () => {
         chart?.resize();
     });

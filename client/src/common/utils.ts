@@ -1,3 +1,7 @@
+import { BarChart, SunburstChart } from "echarts/charts";
+import { GridComponent, TitleComponent, ToolboxComponent, TooltipComponent } from "echarts/components";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
 import type { datastore } from "./datastore";
 
 export const ICON_SHARE =
@@ -17,4 +21,17 @@ export function formatNumber(v: number) {
 
 export function sortData(data: datastore.Item[]) {
     data.sort((a, b) => b.value - a.value)
+}
+
+
+export function initEcharts() {
+    use([
+        CanvasRenderer,
+        SunburstChart,
+        BarChart,
+        TitleComponent,
+        TooltipComponent,
+        ToolboxComponent,
+        GridComponent,
+    ])
 }

@@ -1,10 +1,21 @@
 import "bootstrap"
-import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
+import "bootstrap/dist/css/bootstrap.css"
+import { use } from "echarts"
+import { BarChart, SunburstChart } from "echarts/charts"
+import { GridComponent } from "echarts/components"
 import "./app.css"
 import App from "./App.svelte"
 import { api } from "./common/api"
 import { goto } from "./common/route"
+
+
+use([
+  GridComponent,
+  BarChart,
+  SunburstChart,
+])
+
 
 console.info("location.hash", location.hash)
 
